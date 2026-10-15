@@ -1,0 +1,1 @@
+"""MCP tool packages grouped by Gitea API domain."""

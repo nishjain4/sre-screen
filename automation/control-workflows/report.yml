@@ -1,0 +1,41 @@
+name: Report Source Validation
+on:
+  schedule:
+    - cron: '* * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: source-validation-reporter
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: gitea-control
+    timeout-minutes: 15
+    steps:
+      - name: Require immutable reviewed worker revision
+        env:
+          WORKER_SHA: ${{ vars.VALIDATION_WORKER_SHA }}
+        run: |
+          case "$WORKER_SHA" in *[!0-9a-f]*|'') exit 1 ;; esac
+          test "${#WORKER_SHA}" -eq 40
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.VALIDATION_REPOSITORY }}
+          ref: ${{ vars.VALIDATION_WORKER_SHA }}
+          token: ${{ secrets.VALIDATION_REPORT_TOKEN }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m pip install -e ./backend
+      - name: Report completed source runs
+        env:
+          GITEA_SERVER_URL: ${{ gitea.server_url }}
+          GITEA_REPOSITORY: ${{ vars.VALIDATION_REPOSITORY }}
+          GITEA_RUN_ID: ${{ gitea.run_id }}
+          GITEA_CONTROL_TOKEN: ${{ secrets.VALIDATION_REPORT_TOKEN }}
+          GITEA_ALERT_ASSIGNEES: ${{ vars.VALIDATION_ALERT_ASSIGNEES }}
+          GITEA_CONTROL_REPOSITORY: ${{ gitea.repository }}
+          GUARD_STATE_PATH: /var/lib/sre-guard/reporter.sqlite3
+        run: python automation/gitea_control.py poll

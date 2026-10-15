@@ -1,0 +1,12 @@
+servers:
+  # Start the bundled gitea_mcp/gitea_mcp_server.py before the backend.
+  - name: gitea
+    enabled: true
+    transport: http
+    url: http://localhost:8001/mcp
+    category: gitea
+    headers:
+      Gitea-URL: ${GITEA_URL}
+      Gitea-Token: ${GITEA_TOKEN}
+      Gitea-Owner: ${GITEA_OWNER}
+      Gitea-Repo: ${GITEA_REPO}

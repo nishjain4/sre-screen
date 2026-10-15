@@ -1,0 +1,28 @@
+# Gitea repository workflows shown on the home page.
+templates:
+  - id: repository-overview
+    title: Repository Overview
+    description: Review repository metadata, branches, commits, PRs, issues, CI, and releases
+    category: Gitea
+    icon: gitea
+    query: "Summarize this Gitea repository"
+    mode: auto
+    skill_ids: []
+
+  - id: pull-request-review
+    title: Pull Request Review
+    description: Inspect a pull request for defects and review evidence
+    category: Gitea
+    icon: review
+    query: "Review pull request #123 for bugs"
+    mode: specific
+    skill_ids: [gitea_pull_requests]
+
+  - id: recent-commit
+    title: Recent Commit
+    description: Summarize the latest commit and changed files
+    category: Gitea
+    icon: commit
+    query: "Summarize the latest commit"
+    mode: specific
+    skill_ids: [gitea_commits_status]

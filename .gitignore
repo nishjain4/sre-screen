@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+backend/.env
+backend/data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite*
+*.egg-info/
+build/
+dist/
+validation-results/
+.ruff_cache/
+.coverage*
+htmlcov/
+
+# Keep local tests, but do not publish them.
+tests/
+test/
+test_*.py
+*_test.py
+*.test.*
+*.spec.*
+__tests__/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Editor and local state
+.vscode/
+.idea/
+*.log

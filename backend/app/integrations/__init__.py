@@ -1,0 +1,1 @@
+"""Gitea MCP server integration."""
